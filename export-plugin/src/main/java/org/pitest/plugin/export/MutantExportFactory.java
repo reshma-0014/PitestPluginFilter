@@ -11,24 +11,23 @@ import org.pitest.mutationtest.filter.MutationFilter;
 import org.pitest.mutationtest.filter.MutationFilterFactory;
 import org.pitest.plugin.Feature;
 
-public class MutantExportFactory implements MutationFilterFactory {
+public class MutantExportFactory implements MutationInterceptorFactory {
 
-	
-  @Override
-  public String description() {
-    return "Mutant export plugin";
-  }
+	@Override
+	  public String description() {
+	    return "Mutant export plugin";
+	  }
 
-  @Override
-  public MutationFilter createFilter(Properties props, CodeSource source, int maxMutationsPerClass) {
-    return new MutantExportInterceptor();
-  }
+	  @Override
+	  public MutationInterceptor createInterceptor(InterceptorParameters params) {
+	    return new MutantExportInterceptor();
+	  }
 
-//  @Override
-//  public Feature provides() {
-//    return Feature.named("EXPORT")
-//        .withDescription("Exports mutants bytecode and other details to disk")
-//        .withOnByDefault(true);
-//  }
+	  @Override
+	  public Feature provides() {
+	    return Feature.named("EXPORT")
+	        .withDescription("Exports mutants bytecode and other details to disk")
+	        .withOnByDefault(true);
+	  }
 
 }
