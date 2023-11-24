@@ -7,8 +7,6 @@ import org.pitest.classpath.CodeSource;
 import org.pitest.mutationtest.build.InterceptorParameters;
 import org.pitest.mutationtest.build.MutationInterceptor;
 import org.pitest.mutationtest.build.MutationInterceptorFactory;
-import org.pitest.mutationtest.filter.MutationFilter;
-import org.pitest.mutationtest.filter.MutationFilterFactory;
 import org.pitest.plugin.Feature;
 
 public class MutantExportFactory implements MutationInterceptorFactory {
