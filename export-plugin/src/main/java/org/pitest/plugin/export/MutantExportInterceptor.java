@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.util.Textifier;
@@ -26,14 +27,14 @@ import org.pitest.mutationtest.build.MutationInterceptor;
 import org.pitest.mutationtest.engine.Mutant;
 import org.pitest.mutationtest.engine.Mutater;
 import org.pitest.mutationtest.engine.MutationDetails;
-import org.pitest.mutationtest.filter.MutationFilter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.pitest.functional.F;
 
 public class MutantExportInterceptor implements MutationInterceptor {
 	
+	 private static final Logger logger = LoggerFactory.getLogger(MutantExportInterceptor.class);
 
 	 @Override
 	  public void begin(ClassTree clazz) {
@@ -43,6 +44,9 @@ public class MutantExportInterceptor implements MutationInterceptor {
 	@Override
 	  public Collection<MutationDetails> intercept(
 	      Collection<MutationDetails> mutations, Mutater m) {
+		logger.info("This is an info message");
+		logger.debug("This is a debug message");
+		logger.warn("This is a warning message");
 	    return FCollection.filter(mutations, isMethodToFilter());
 	  }
 	  
@@ -58,16 +62,16 @@ public class MutantExportInterceptor implements MutationInterceptor {
 	   
 	  }
 
-	  private F<MutationDetails, Boolean> isMethodToFilter() {
-	    return new F<MutationDetails, Boolean>() {
-	      @Override
-	      public Boolean apply(MutationDetails mutation) {
-	        // Modify this condition based on your method name filtering criteria
-	        return mutation.getMethod().name().equals("getMetaData");
-	      }
-	    };
-	  }
+	  private Predicate<MutationDetails> isMethodToFilter() {
+	        return mutation -> {
+	            String methodName = mutation.getMethod().toString();
+	            return isMethodToFilter(methodName);
+	        };
+	    }
 
+	  private boolean isMethodToFilter(String methodName) {
+	        return methodName.equals("getMetaData");
+	    }
 
 }
 
